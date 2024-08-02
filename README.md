@@ -1,10 +1,10 @@
-TITLE
+#TITLE
 Handwritten digit prediction 
 
-OBJECTIVE
+#OBJECTIVE
 Handwritten digit prediction with machine learning
 
-IMPORT LIBRARY
+#IMPORT LIBRARY
 
 import tensorflow as tf
 from tensorflow.keras.datasets import mnist
@@ -14,23 +14,23 @@ from tensorflow.keras.utils import to_categorical
 
 IMPORT DATA AND PREPROCESSING
 
-# Load MNIST data
+Load MNIST data
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 
-# Normalize pixel values to be between 0 and 1
+Normalize pixel values to be between 0 and 1
 x_train, x_test = x_train / 255.0, x_test / 255.0
 
-# Convert labels to one-hot encoding
+Convert labels to one-hot encoding
 y_train = to_categorical(y_train, 10)
 y_test = to_categorical(y_test, 10)
 
 
-TRAIN TEST SPLIT
+#TRAIN TEST SPLIT
 
 model.fit(x_train, y_train, epochs=5, batch_size=32, validation_split=0.2)
 
      
-MODELING
+#MODELING
 
 model = Sequential([
     Flatten(input_shape=(28, 28)),  # Flatten the 28x28 images
@@ -40,7 +40,7 @@ model = Sequential([
 
 
      
-MODEL EVALUATION
+#MODEL EVALUATION
 
 test_loss, test_acc = model.evaluate(x_test, y_test)
 print(f'Test accuracy: {test_acc}')
@@ -48,9 +48,9 @@ print(f'Test accuracy: {test_acc}')
 
 
      
-PREDICTION
+#PREDICTION
 
-# Predict the class of the first test image
+Predict the class of the first test image
 predictions = model.predict(x_test)
 print(f'Predicted class for the first test image: {predictions[0].argmax()}')
 
