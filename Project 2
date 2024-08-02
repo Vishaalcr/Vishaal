@@ -1,0 +1,95 @@
+# TITLE
+Movie recommendation system 
+
+
+# OBJECTIVE
+movie recommendation system in machine learning using python 
+
+
+# IMPORT LIBRARY
+pip install pandas numpy scikit-learn surprise
+
+
+     
+# IMPORT DATA
+
+import pandas as pd
+from surprise import Dataset, Reader
+
+Load the dataset
+data = Dataset.load_builtin('ml-100k')
+reader = Reader(line_format='user item rating timestamp', sep='\t')
+data = Dataset.load_from_file('path_to_your_movielens_data', reader=reader)
+
+Load the data into a pandas DataFrame
+df = pd.read_csv('path_to_your_movielens_data', delimiter='\t', header=None, names=['userId', 'movieId', 'rating', 'timestamp'])
+
+Display the first few rows
+print(df.head())
+    
+     
+# TRAIN TEST SPLIT
+
+from surprise.model_selection import train_test_split
+
+trainset, testset = train_test_split(data, test_size=0.2)
+     
+# MODELING
+
+from surprise import SVD, accuracy
+
+# Build and train the model
+model = SVD()
+model.fit(trainset)
+
+     
+# MODEL EVALUATION AND PREDICTION
+Make predictions
+predictions = model.test(testset)
+
+Compute and print RMSE
+rmse = accuracy.rmse(predictions)
+print(f'RMSE: {rmse}')
+
+# MAKE RECOMMENDATION FOR USER
+def get_top_n(predictions, n=10):
+    top_n = {}
+    for uid, iid, true_r, est, _ in predictions:
+        if not top_n.get(uid):
+            top_n[uid] = []
+        top_n[uid].append((iid, est))
+
+    Then sort the predictions for each user and retrieve the N highest ones.
+    for uid, user_ratings in top_n.items():
+        user_ratings.sort(key=lambda x: x[1], reverse=True)
+        top_n[uid] = user_ratings[:n]
+
+    return top_n
+
+Get top-N recommendations
+top_n_recommendations = get_top_n(predictions, n=10)
+
+Example: Get recommendations for user '196'
+print(top_n_recommendations['196'])
+
+
+     
+# EXPLAINATION
+1.Install Required Libraries
+You need to install libraries like pandas, numpy, and scikit-learn. Additionally, surprise is a popular library specifically for building recommendation systems.
+
+2.Load and Prepare Data
+You'll need a dataset with user-item interactions. For this example, we'll use the MovieLens dataset
+
+3.Create a Training and Test Set
+Split the data into training and test sets.
+
+4.Modeling
+We'll use Singular Value Decomposition (SVD) for matrix factorization, a popular method in collaborative filtering.
+
+5.Model evaluation and prediction
+
+Check the performance of the model on the test set.
+
+6.User recommendation 
+Generate recommendations for a user.
